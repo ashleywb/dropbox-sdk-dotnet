@@ -32,9 +32,10 @@ namespace Dropbox.Api.Files
         /// </summary>
         /// <param name="path">The path in the user's Dropbox to search. Should probably be a
         /// folder.</param>
-        /// <param name="query">The string to search for. The search string is split on spaces
-        /// into multiple tokens. For file name searching, the last token is used for prefix
-        /// matching (i.e. "bat c" matches "bat cave" but not "batman car").</param>
+        /// <param name="query">The string to search for. Query string may be rewritten to
+        /// improve relevance of results. The string is split on spaces into multiple tokens.
+        /// For file name searching, the last token is used for prefix matching (i.e. "bat c"
+        /// matches "bat cave" but not "batman car").</param>
         /// <param name="start">The starting index within the search results (used for
         /// paging).</param>
         /// <param name="maxResults">The maximum number of search results to return.</param>
@@ -59,6 +60,10 @@ namespace Dropbox.Api.Files
             if (query == null)
             {
                 throw new sys.ArgumentNullException("query");
+            }
+            if (query.Length > 1000)
+            {
+                throw new sys.ArgumentOutOfRangeException("query", "Length should be at most 1000");
             }
 
             if (start > 9999UL)
@@ -105,9 +110,10 @@ namespace Dropbox.Api.Files
         public string Path { get; protected set; }
 
         /// <summary>
-        /// <para>The string to search for. The search string is split on spaces into multiple
-        /// tokens. For file name searching, the last token is used for prefix matching (i.e.
-        /// "bat c" matches "bat cave" but not "batman car").</para>
+        /// <para>The string to search for. Query string may be rewritten to improve relevance
+        /// of results. The string is split on spaces into multiple tokens. For file name
+        /// searching, the last token is used for prefix matching (i.e. "bat c" matches "bat
+        /// cave" but not "batman car").</para>
         /// </summary>
         public string Query { get; protected set; }
 

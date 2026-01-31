@@ -17,9 +17,10 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
-[assembly: AssemblyVersion("4.0.0")]
-[assembly: AssemblyFileVersion("4.0.7111")]
+[assembly: AssemblyVersion("5.0.0")]
+[assembly: AssemblyFileVersion("5.0.7591")]
 
 #if DEBUG
-[assembly: InternalsVisibleTo("Dropbox.Api.Tests")]
+[assembly: InternalsVisibleTo("Dropbox.Api.Integration.Tests")]
+[assembly: InternalsVisibleTo("Dropbox.Api.Unit.Tests")]
 #endif

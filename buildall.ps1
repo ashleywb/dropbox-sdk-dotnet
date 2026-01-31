@@ -1,4 +1,4 @@
-﻿
+
  param (
     [Parameter(Mandatory=$true)]
     [string]$testSettings,
@@ -12,53 +12,22 @@ $nugetUrl = "http://dist.nuget.org/win-x86-commandline/latest/nuget.exe"
 $solutionDir = Resolve-Path "dropbox-sdk-dotnet"
 $generatorDir = Resolve-Path "generator"
 $sourceDir = "$solutionDir\Dropbox.Api"
-$testsDir = "$solutionDir\Dropbox.Api.Tests"
+$testsDir = "$solutionDir\Dropbox.Api.Unit.Tests"
 $specDir = Resolve-Path "spec"
 $nugetDir = "$solutionDir\.nuget"
 $nugetPath = "$nugetDir\nuget.exe"
 $nugetSpecPath = "$sourceDir\Dropbox.Api.nuspec"
 $docBuildPath = Resolve-Path "doc\StoneDocs.shfbproj"
-$majorVersion = "4.0"
-$releaseVersion = "4.9.4"
+$majorVersion = "5.0"
+$releaseVersion = "5.3.0"
 $assemblyInfoPath = "$sourceDir\AppProperties\AssemblyInfo.cs"
 $signKeyPath = "$sourceDir\dropbox_api_key.snk"
 $releaseNotes = @'
-What's New:
-
-  - Files namespace:
-    - Added new ExportInfo struct
-    - Added new fields (is_downloadable, export_info) to FileMetadata
-    - Added new include_non_downloadable_files to ListFolderArg
-    - Added new ExportMetadata, ExportArg, Export Result Structs
-    - Added new ExportError union
-    - Added new /export route
-
-  - Sharing namespace:
-    - Added password field to LinkAudience
-    - Added effective_audience and link_access_level fields to LinkPermissions struct
-    - Updated docstrings for LinkPermissions
-    - Added audience and access fields to SharedLinkSettings struct
-    - New LinkAccessLevel and RequestedLinkAccessLevel union
-    - Added new create_view_link and create_edit_link fields to FileAction union
-
-  - Team_log namespace:
-    - New types added
-
-  - Team_policies namespace:
-    - New TwoStepVerificationState union
-
-  - Team_reports namespace:
-    - New TemporaryFailureReason union added.
-
+ See https://github.com/dropbox/dropbox-sdk-dotnet/releases for notes on the current release.
 '@
 
 $builds = @(
-    @{Name = "Dropbox.Api"; Configuration="Release"; SignAssembly=$true; TestsName="Dropbox.Api.Tests"},
-    @{Name = "Dropbox.Api.Portable"; Configuration="Release"; SignAssembly=$true; TestName=$null},
-    @{Name = "Dropbox.Api.Portable40"; Configuration="Release"; SignAssembly=$true; TestName=$null},
-    @{Name = "Dropbox.Api.NetStandard"; Configuration="Release"; SignAssembly=$true; TestName=$null},
-    @{Name = "Dropbox.Api.Doc"; Configuration="Release"; SignAssembly=$false; TestName=$null}
-)
+    @{Name = "Dropbox.Api"; Configuration="Release"; SignAssembly=$true; TestsName="Dropbox.Api.Unit.Tests"})
 
 function RunCommand($command)
 {

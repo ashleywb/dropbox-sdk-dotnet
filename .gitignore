@@ -1,6 +1,9 @@
+/dropbox-sdk-dotnet/Dropbox.Api.Tests/dropbox.runsettings
+
 ## Visual studio stuff
 *.suo
 *.user
+.vs/
 
 #ignore build contents
 [dD]ebug/

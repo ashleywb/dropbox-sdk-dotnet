@@ -53,8 +53,6 @@ class DropboxCSharpGenerator(_CSharpGenerator):
                                          'An HTTP exception that is caused by invalid'
                                          'Dropbox-Api-Path-Root header.')
                                          
-        self._generate_csproj()
-
         self._generate_xml_doc(api)
 
     def _generate_xml_doc(self, api):
@@ -98,10 +96,8 @@ class DropboxCSharpGenerator(_CSharpGenerator):
         cannot reliably generate documentation from a portable assembly.
         """
         files = [f for f in self._generated_files if f.endswith('.cs')]
-        modes = [('Portable', '.Portable'),
-                 ('Portable40', '.Portable40'),
-                 ('Net45', ''),
-                 ('Doc', '.Doc')]
+        modes = [
+                 ('Net45', '')]
 
         for mode, suffix in modes:
             with self.output_to_relative_path(

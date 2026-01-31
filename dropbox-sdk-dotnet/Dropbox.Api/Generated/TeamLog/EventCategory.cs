@@ -79,6 +79,28 @@ namespace Dropbox.Api.TeamLog
         }
 
         /// <summary>
+        /// <para>Gets a value indicating whether this instance is DataGovernance</para>
+        /// </summary>
+        public bool IsDataGovernance
+        {
+            get
+            {
+                return this is DataGovernance;
+            }
+        }
+
+        /// <summary>
+        /// <para>Gets this instance as a DataGovernance, or <c>null</c>.</para>
+        /// </summary>
+        public DataGovernance AsDataGovernance
+        {
+            get
+            {
+                return this as DataGovernance;
+            }
+        }
+
+        /// <summary>
         /// <para>Gets a value indicating whether this instance is Devices</para>
         /// </summary>
         public bool IsDevices
@@ -522,6 +544,12 @@ namespace Dropbox.Api.TeamLog
                     Comments.Encoder.EncodeFields((Comments)value, writer);
                     return;
                 }
+                if (value is DataGovernance)
+                {
+                    WriteProperty(".tag", "data_governance", writer, enc.StringEncoder.Instance);
+                    DataGovernance.Encoder.EncodeFields((DataGovernance)value, writer);
+                    return;
+                }
                 if (value is Devices)
                 {
                     WriteProperty(".tag", "devices", writer, enc.StringEncoder.Instance);
@@ -672,6 +700,8 @@ namespace Dropbox.Api.TeamLog
                         return Apps.Decoder.DecodeFields(reader);
                     case "comments":
                         return Comments.Decoder.DecodeFields(reader);
+                    case "data_governance":
+                        return DataGovernance.Decoder.DecodeFields(reader);
                     case "devices":
                         return Devices.Decoder.DecodeFields(reader);
                     case "domains":
@@ -847,6 +877,76 @@ namespace Dropbox.Api.TeamLog
                 protected override Comments Create()
                 {
                     return Comments.Instance;
+                }
+
+            }
+
+            #endregion
+        }
+
+        /// <summary>
+        /// <para>Events that involve data governance actions</para>
+        /// </summary>
+        public sealed class DataGovernance : EventCategory
+        {
+            #pragma warning disable 108
+
+            /// <summary>
+            /// <para>The encoder instance.</para>
+            /// </summary>
+            internal static enc.StructEncoder<DataGovernance> Encoder = new DataGovernanceEncoder();
+
+            /// <summary>
+            /// <para>The decoder instance.</para>
+            /// </summary>
+            internal static enc.StructDecoder<DataGovernance> Decoder = new DataGovernanceDecoder();
+
+            /// <summary>
+            /// <para>Initializes a new instance of the <see cref="DataGovernance" />
+            /// class.</para>
+            /// </summary>
+            private DataGovernance()
+            {
+            }
+
+            /// <summary>
+            /// <para>A singleton instance of DataGovernance</para>
+            /// </summary>
+            public static readonly DataGovernance Instance = new DataGovernance();
+
+            #region Encoder class
+
+            /// <summary>
+            /// <para>Encoder for  <see cref="DataGovernance" />.</para>
+            /// </summary>
+            private class DataGovernanceEncoder : enc.StructEncoder<DataGovernance>
+            {
+                /// <summary>
+                /// <para>Encode fields of given value.</para>
+                /// </summary>
+                /// <param name="value">The value.</param>
+                /// <param name="writer">The writer.</param>
+                public override void EncodeFields(DataGovernance value, enc.IJsonWriter writer)
+                {
+                }
+            }
+
+            #endregion
+
+            #region Decoder class
+
+            /// <summary>
+            /// <para>Decoder for  <see cref="DataGovernance" />.</para>
+            /// </summary>
+            private class DataGovernanceDecoder : enc.StructDecoder<DataGovernance>
+            {
+                /// <summary>
+                /// <para>Create a new instance of type <see cref="DataGovernance" />.</para>
+                /// </summary>
+                /// <returns>The struct instance.</returns>
+                protected override DataGovernance Create()
+                {
+                    return DataGovernance.Instance;
                 }
 
             }

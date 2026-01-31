@@ -31,9 +31,14 @@ namespace Dropbox.Api.TeamLog.Routes
         internal enc.ITransport Transport { get; private set; }
 
         /// <summary>
-        /// <para>Retrieves team events.</para>
-        /// <para>Events have a lifespan of two years. Events older than two years will not be
-        /// returned.</para>
+        /// <para>Retrieves team events. If the result's <see
+        /// cref="Dropbox.Api.TeamLog.GetTeamEventsResult.HasMore" /> field is <c>true</c>,
+        /// call <see
+        /// cref="Dropbox.Api.TeamLog.Routes.TeamLogTeamRoutes.GetEventsContinueAsync" /> with
+        /// the returned cursor to retrieve more entries. If end_time is not specified in your
+        /// request, you may use the returned cursor to poll <see
+        /// cref="Dropbox.Api.TeamLog.Routes.TeamLogTeamRoutes.GetEventsContinueAsync" /> for
+        /// new events.</para>
         /// <para>Many attributes note 'may be missing due to historical data gap'.</para>
         /// <para>Note that the file_operations category and & analogous paper events are not
         /// available on all Dropbox Business <a href="/business/plans-comparison">plans</a>.
@@ -70,9 +75,14 @@ namespace Dropbox.Api.TeamLog.Routes
         }
 
         /// <summary>
-        /// <para>Retrieves team events.</para>
-        /// <para>Events have a lifespan of two years. Events older than two years will not be
-        /// returned.</para>
+        /// <para>Retrieves team events. If the result's <see
+        /// cref="Dropbox.Api.TeamLog.GetTeamEventsResult.HasMore" /> field is <c>true</c>,
+        /// call <see
+        /// cref="Dropbox.Api.TeamLog.Routes.TeamLogTeamRoutes.GetEventsContinueAsync" /> with
+        /// the returned cursor to retrieve more entries. If end_time is not specified in your
+        /// request, you may use the returned cursor to poll <see
+        /// cref="Dropbox.Api.TeamLog.Routes.TeamLogTeamRoutes.GetEventsContinueAsync" /> for
+        /// new events.</para>
         /// <para>Many attributes note 'may be missing due to historical data gap'.</para>
         /// <para>Note that the file_operations category and & analogous paper events are not
         /// available on all Dropbox Business <a href="/business/plans-comparison">plans</a>.
@@ -87,10 +97,13 @@ namespace Dropbox.Api.TeamLog.Routes
         /// fetch again using <see
         /// cref="Dropbox.Api.TeamLog.Routes.TeamLogTeamRoutes.GetEventsContinueAsync"
         /// />.</param>
-        /// <param name="accountId">Filter the events by account ID. Return ony events with
+        /// <param name="accountId">Filter the events by account ID. Return only events with
         /// this account_id as either Actor, Context, or Participants.</param>
         /// <param name="time">Filter by time range.</param>
-        /// <param name="category">Filter the returned events to a single category.</param>
+        /// <param name="category">Filter the returned events to a single category. Note that
+        /// category shouldn't be provided together with event_type.</param>
+        /// <param name="eventType">Filter the returned events to a single event type. Note
+        /// that event_type shouldn't be provided together with category.</param>
         /// <returns>The task that represents the asynchronous send operation. The TResult
         /// parameter contains the response from the server.</returns>
         /// <exception cref="Dropbox.Api.ApiException{TError}">Thrown if there is an error
@@ -99,12 +112,14 @@ namespace Dropbox.Api.TeamLog.Routes
         public t.Task<GetTeamEventsResult> GetEventsAsync(uint limit = 1000,
                                                           string accountId = null,
                                                           global::Dropbox.Api.TeamCommon.TimeRange time = null,
-                                                          EventCategory category = null)
+                                                          EventCategory category = null,
+                                                          EventTypeArg eventType = null)
         {
             var getTeamEventsArg = new GetTeamEventsArg(limit,
                                                         accountId,
                                                         time,
-                                                        category);
+                                                        category,
+                                                        eventType);
 
             return this.GetEventsAsync(getTeamEventsArg);
         }
@@ -118,10 +133,13 @@ namespace Dropbox.Api.TeamLog.Routes
         /// fetch again using <see
         /// cref="Dropbox.Api.TeamLog.Routes.TeamLogTeamRoutes.GetEventsContinueAsync"
         /// />.</param>
-        /// <param name="accountId">Filter the events by account ID. Return ony events with
+        /// <param name="accountId">Filter the events by account ID. Return only events with
         /// this account_id as either Actor, Context, or Participants.</param>
         /// <param name="time">Filter by time range.</param>
-        /// <param name="category">Filter the returned events to a single category.</param>
+        /// <param name="category">Filter the returned events to a single category. Note that
+        /// category shouldn't be provided together with event_type.</param>
+        /// <param name="eventType">Filter the returned events to a single event type. Note
+        /// that event_type shouldn't be provided together with category.</param>
         /// <param name="callback">The method to be called when the asynchronous send is
         /// completed.</param>
         /// <param name="callbackState">A user provided object that distinguished this send
@@ -131,13 +149,15 @@ namespace Dropbox.Api.TeamLog.Routes
                                                string accountId = null,
                                                global::Dropbox.Api.TeamCommon.TimeRange time = null,
                                                EventCategory category = null,
+                                               EventTypeArg eventType = null,
                                                sys.AsyncCallback callback = null,
                                                object callbackState = null)
         {
             var getTeamEventsArg = new GetTeamEventsArg(limit,
                                                         accountId,
                                                         time,
-                                                        category);
+                                                        category,
+                                                        eventType);
 
             return this.BeginGetEvents(getTeamEventsArg, callback, callbackState);
         }
